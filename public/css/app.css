@@ -5754,7 +5754,8 @@ button.close {
     padding: 0;
     list-style: none;
     position: relative;
-    transition: height 0.4s; }
+    transition: height 0.4s;
+    overflow: hidden; }
     .simform ol:before {
       content: '';
       background-color: rgba(0, 0, 0, 0.1);
@@ -5780,18 +5781,16 @@ button.close {
       overflow: hidden; }
       .questions li > span label {
         display: block;
-        font-weight: normal;
-        transition: transform 0.4s;
-        transform: translateY(-100%); }
+        font-weight: normal; }
     .questions li.current {
       visibility: visible;
       height: auto;
       transition: none; }
   .questions input {
     display: block;
-    margin: 0.3em 0 0 0;
+    margin: 0.3em 0 0 2em;
     padding: 0.5em 1em 0.5em 0.7em;
-    width: calc(100% - 2em);
+    width: calc(100% - 4em);
     border: none;
     background: transparent;
     color: rgba(0, 0, 0, 0.8);
@@ -5817,14 +5816,31 @@ button.close {
 .no-js .questions input {
   opacity: 1; }
 
-.show-next .questions li.current > span label {
-  animation: moveUpFromDown 0.4s both; }
-
 @keyframes moveUpFromDown {
   from {
     transform: translateY(100%); }
   to {
     transform: translateY(0); } }
+
+@keyframes moveDownFromUp {
+  from {
+    transform: translateY(-100%); }
+  to {
+    transform: translateY(0); } }
+
+.show-next .questions li > span label {
+  transition: transform 0.4s;
+  transform: translateY(-100%); }
+
+.show-previous .questions li > span label {
+  transition: transform 0.4s;
+  transform: translateY(100%); }
+
+.show-next .questions li.current > span label {
+  animation: moveUpFromDown 0.4s both; }
+
+.show-previous .questions li.current > span label {
+  animation: moveDownFromUp 0.4s both; }
 
 /* Next question button */
 .next {
@@ -5855,7 +5871,7 @@ button.close {
     left: 0;
     width: 100%;
     height: 100%;
-    content: "\e600";
+    content: "\ea3c";
     text-transform: none;
     font-weight: normal;
     font-style: normal;
@@ -5866,6 +5882,50 @@ button.close {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale; }
   .next.show {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto; }
+
+/* Previous question button */
+.previous {
+  position: absolute;
+  left: 0.4em;
+  bottom: 2.9em;
+  /* padding-bottom of form plus progress bar height */
+  display: block;
+  padding: 0;
+  width: 2em;
+  height: 2em;
+  border: none;
+  background: none;
+  color: rgba(0, 0, 0, 0.4);
+  text-align: center;
+  opacity: 0;
+  z-index: 101;
+  cursor: pointer;
+  transition: transform 0.3s, opacity 0.3s;
+  transform: translateX(-20%);
+  pointer-events: none;
+  -webkit-tap-highlight-color: transparent; }
+  .previous:hover {
+    color: rgba(0, 0, 0, 0.5); }
+  .previous::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: "\ea40";
+    text-transform: none;
+    font-weight: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-family: 'icomoon';
+    line-height: 2;
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale; }
+  .previous.show {
     opacity: 1;
     transform: translateX(0);
     pointer-events: auto; }
@@ -5914,6 +5974,11 @@ button.close {
     transform: translateY(-100%); }
   .simform.show-next .number-next {
     animation: moveUpFromDown 0.4s both; }
+  .simform.show-previous .number-current {
+    transition: transform 0.4s;
+    transform: translateY(100%); }
+  .simform.show-previous .number-next {
+    animation: moveDownFromUp 0.4s both; }
   .simform .error-message, .simform .final-message {
     position: absolute;
     visibility: hidden;

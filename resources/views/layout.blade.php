@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Project Happy</title>
+        <title>StepsForm</title>
 
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
         <link href="/css/normalize.css" rel="stylesheet" type="text/css"/>
@@ -18,7 +18,6 @@
         <div>
             @yield('content')
         </div>
-
         <!-- JAVASCRIPT BUILD -->
         <script src="/js/all.js" ></script>
         <script>
@@ -27,11 +26,11 @@
                 onSubmit : function( form ) {
                     // hide form
                     classie.addClass( theForm.querySelector( '.simform-inner' ), 'hide' );
-
+                    
                     /*
                     form.submit()
                     or
-                    AJAX request (maybe show loading indicator while we don't have an answer..)
+                    AJAX request
                     */
 
                     // let's just simulate something...

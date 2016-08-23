@@ -123,6 +123,8 @@ Some basic rules for the module:
 		classie.addClass( this.questions[0], 'current' );
 		// next question control
 		this.ctrlNext = this.el.querySelector( 'button.next' );
+		// previous question control
+		this.ctrlPrevious = this.el.querySelector( 'button.previous' );
 		// progress bar
 		this.progress = this.el.querySelector( 'div.progress' );
 		// question number status
@@ -159,12 +161,17 @@ Some basic rules for the module:
 				self.nextQuestion();
 			});
 
+			this.ctrlPrevious.addEventListener('click', function(event){	
+				event.preventDefault();
+				self.previousQuestion();
+			});
+
 			//press enter to jump to the next question
 			document.addEventListener('keydown', function(event) {
 				var keyCode = event.keyCode || event.which;
 
 				if(keyCode == 13) {
-					ev.preventDefault();
+					event.preventDefault();
 					self.nextQuestion();
 				}
 			})
@@ -192,6 +199,10 @@ Some basic rules for the module:
 
 			// increment current question iterator
 			++this.current;
+			//check if the question is first or not to show the back button
+			if(!classie.hasClass(this.ctrlPrevious, 'show')) {
+				classie.addClass(this.ctrlPrevious, 'show');
+			}
 
 			this.makeProgress();
 
@@ -228,6 +239,55 @@ Some basic rules for the module:
 
 			if( support.transitions ) this.progress.addEventListener( transEndEventName, onEndTransitionFn );
 			else onEndTransitionFn();
+		},
+		previousQuestion: function() {
+			//clear error messages
+			this.clearError();
+
+			// current question
+			var currentQuestion = this.questions[ this.current ];
+
+			// decrement current question iterator
+			--this.current;
+
+			//update the progress bar and the numbers
+			this.makeProgress();
+
+			// change the current question number/status
+			this.updateQuestionNumber();
+
+			// add class "show-previous" to form element (start animations)
+			classie.addClass( this.el, 'show-previous' );
+
+			//if the question is the first one then hide the button
+			if( this.current === 0 ) {
+				classie.removeClass( this.ctrlPrevious, 'show' );
+			}
+
+			var previousQuestion = this.questions[ this.current ];
+			classie.removeClass( currentQuestion, 'current' );
+			classie.addClass( previousQuestion, 'current' );
+
+			// after animation ends, remove class "show-next" from form element and change current question placeholder
+			var self = this,
+				onEndTransitionFn = function( ev ) {
+					if( support.transitions ) {
+						this.removeEventListener( transEndEventName, onEndTransitionFn );
+					}
+					
+					classie.removeClass( self.el, 'show-previous' );
+					self.currentNum.innerHTML = self.nextQuestionNum.innerHTML;
+					self.questionStatus.removeChild( self.nextQuestionNum );
+					// force the focus on the next input
+					previousQuestion.querySelector( 'input' ).focus();
+				};
+
+			if( support.transitions ) {
+				this.progress.addEventListener( transEndEventName, onEndTransitionFn );
+			}
+			else {
+				onEndTransitionFn();
+			}
 		},
 		makeProgress: function() {
 			this.progress.style.width = this.current * (100/this.questionsCount) + '%';

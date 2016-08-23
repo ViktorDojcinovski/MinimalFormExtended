@@ -1,0 +1,22 @@
+***********************************
+* Credits ************************
+***********************************
+
+All credits for this tiny project go to Mary Lou, from Codrops.
+
+***********************************
+* Customizing the project *********
+***********************************
+
+Essentially the project is the same to the original one from Codrops, with one added functionality, and use of some more structure in the javascript code and css code. 
+
+What it means is that the main javascript file is written using Object Literal Pattern, which saves for about 20 lines of code, and also the css is amended with scss, which is compiled to css with the elixir module. 
+
+The functionality mentioned above is the back button, that reverses the form one step backwards.
+
+***********************************
+* Laravel version *****************
+***********************************
+
+The Laravel version is Laravel 5.2.
+
